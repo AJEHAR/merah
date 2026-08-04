@@ -357,10 +357,6 @@ acaraForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const namaAcara = acaraNamaInput.value.trim();
   if (!namaAcara) return;
-  if (selectedPesertaIds.size === 0) {
-    alert("Pilih sekurang-kurangnya seorang peserta.");
-    return;
-  }
 
   saveAcaraBtn.disabled = true;
   const data = {
