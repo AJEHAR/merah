@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rumah Merah — Kenali Ahli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="page-head">
+    <div class="head-inner">
+      <p class="eyebrow">Kad Pengenalan Ahli</p>
+      <h1>Rumah Merah</h1>
+      <p class="sub">Tatal ikut kategori untuk mengenali wajah dan nama ahli.</p>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs" aria-label="Kategori murid">
+    <button class="tab" data-cat="pra" aria-current="true">Pra</button>
+    <button class="tab" data-cat="fungsi">Fungsi</button>
+    <button class="tab" data-cat="tahap1">Tahap 1</button>
+    <button class="tab" data-cat="tahap2">Tahap 2</button>
+  </nav>
+
+  <main class="stage">
+    <div class="count-line">
+      <span id="countText">Memuatkan...</span>
+    </div>
+    <div class="grid" id="grid"></div>
+    <div class="empty-state" id="emptyState" hidden>
+      <p>Belum ada murid dalam kategori ini.</p>
+      <p class="empty-sub">Tambah data melalui Firebase Console — lihat README.md.</p>
+    </div>
+  </main>
+
+  <footer class="page-foot">
+    <p>Dibina untuk guru mengenali murid rumah sukan.</p>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
