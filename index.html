@@ -3,10 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Rumah Merah — Kenali Ahli</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<script>document.write('<link rel="stylesheet" href="style.css?v=' + Date.now() + '">');</script>
 </head>
 <body>
 
@@ -15,8 +18,14 @@
       <p class="eyebrow">Kad Pengenalan Ahli</p>
       <h1>Rumah Merah</h1>
       <p class="sub">Tatal ikut kategori untuk mengenali wajah dan nama ahli.</p>
+      <p class="sub sub-hint">👆 Tekan kad murid untuk tandakan kehadiran hari ini.</p>
     </div>
   </header>
+
+  <nav class="page-nav" aria-label="Navigasi">
+    <a class="tab active" href="./">Kenali Ahli</a>
+    <a class="tab" href="acara/">Acara &amp; Peserta</a>
+  </nav>
 
   <nav class="tabs" id="tabs" aria-label="Kategori murid">
     <button class="tab" data-cat="pra" aria-current="true">Pra</button>
@@ -42,7 +51,7 @@
 
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script src="firebase-config.js"></script>
-  <script src="app.js"></script>
+  <script>document.write('<script src="firebase-config.js?v=' + Date.now() + '"><\/script>');</script>
+  <script>document.write('<script src="app.js?v=' + Date.now() + '"><\/script>');</script>
 </body>
 </html>

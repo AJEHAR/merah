@@ -59,6 +59,10 @@ h1{
   color:var(--ink-soft);
   font-size:15px;
 }
+.sub-hint{
+  font-size:13px;
+  margin-top:6px;
+}
 
 /* ---------- tabs ---------- */
 .tabs{
@@ -93,6 +97,23 @@ h1{
 .tab[data-cat="tahap1"].active{background:var(--tahap1);border-color:var(--tahap1);color:#fff;}
 .tab[data-cat="tahap2"].active{background:var(--tahap2);border-color:var(--tahap2);color:#fff;}
 
+/* ---------- page-level nav (Kenali Ahli / Acara & Peserta) ---------- */
+.page-nav{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  padding:16px 20px 0;
+}
+.page-nav a.tab{
+  display:inline-block;
+  text-decoration:none;
+}
+.page-nav a.tab.active{
+  background:var(--brand, var(--pra));
+  border-color:var(--brand, var(--pra));
+  color:#fff;
+}
+
 /* ---------- stage ---------- */
 .stage{
   max-width:1080px;
@@ -120,8 +141,12 @@ h1{
   box-shadow:var(--shadow);
   padding-top:14px;
   overflow:hidden;
+  cursor:pointer;
   animation:rise .35s ease both;
+  transition:transform .12s ease, box-shadow .12s ease;
 }
+.badge:hover{transform:translateY(-2px);}
+.badge:active{transform:translateY(0) scale(.98);}
 @keyframes rise{
   from{opacity:0;transform:translateY(8px);}
   to{opacity:1;transform:translateY(0);}
@@ -170,6 +195,29 @@ h1{
   color:var(--ink-soft);
 }
 
+/* ---------- kehadiran (attendance) ---------- */
+.badge.hadir{box-shadow:0 10px 24px -12px rgba(46,158,91,0.4);}
+.badge.hadir .photo-wrap{box-shadow:0 0 0 3px #2E9E5B, 0 0 0 2px var(--paper) inset;}
+.badge.hadir .badge-cat{color:#2E9E5B;}
+.hadir-check{
+  position:absolute;
+  top:-2px;
+  right:-2px;
+  z-index:2;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:#2E9E5B;
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:2px solid #fff;
+  box-shadow:0 2px 6px rgba(0,0,0,0.25);
+}
+
 .badge-name{
   font-family:'Fredoka',sans-serif;
   font-weight:600;
@@ -186,6 +234,23 @@ h1{
   color:var(--accent);
   text-align:center;
   margin:0 0 16px;
+}
+
+/* ---------- event blocks (acara) ---------- */
+.event-block{margin-bottom:40px;}
+.event-title{
+  font-family:'Fredoka',sans-serif;
+  font-weight:600;
+  font-size:20px;
+  color:var(--brand, var(--accent));
+  border-bottom:2px solid var(--line);
+  padding-bottom:10px;
+  margin:0 0 18px;
+}
+.event-empty-note{
+  color:var(--ink-soft);
+  font-size:13px;
+  margin:0 0 18px;
 }
 
 /* ---------- empty state ---------- */

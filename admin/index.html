@@ -3,11 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Urus Data — Rumah Merah</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css">
-<link rel="stylesheet" href="admin.css">
+<script>document.write('<link rel="stylesheet" href="../style.css?v=' + Date.now() + '">');</script>
+<script>document.write('<link rel="stylesheet" href="admin.css?v=' + Date.now() + '">');</script>
 </head>
 <body>
 
@@ -132,6 +135,47 @@ Aiman,Fungsi,</pre>
         </div>
       </section>
 
+      <section class="panel">
+        <h2>4. Acara &amp; Peserta</h2>
+        <p class="hint">
+          Cipta acara (cth. <em>"100 M Tahap 2"</em>), kemudian tandakan
+          murid yang menyertainya (1 hingga 20 orang). Senarai ini akan
+          dipaparkan di laman <a href="../acara/">/acara</a>.
+        </p>
+        <form id="acaraForm" class="stack">
+          <label>Nama acara
+            <input type="text" id="acaraNama" required placeholder="100 M Tahap 2">
+          </label>
+
+          <div class="peserta-picker">
+            <input type="text" id="pesertaSearch" placeholder="Cari nama murid...">
+            <p class="hint" id="pesertaCountHint">0 / 20 dipilih</p>
+            <div id="pesertaList" class="peserta-list"></div>
+          </div>
+
+          <div class="acara-form-actions">
+            <button type="submit" id="saveAcaraBtn" class="btn-primary">Simpan Acara</button>
+            <button type="button" id="cancelEditAcaraBtn" class="btn-ghost" hidden>Batal Edit</button>
+          </div>
+          <p id="acaraResult" class="hint" hidden></p>
+        </form>
+
+        <h3>Senarai acara sedia ada</h3>
+        <div id="acaraListWrap"></div>
+      </section>
+
+      <section class="panel">
+        <h2>5. Kehadiran</h2>
+        <p class="hint">
+          Murid ditanda hadir apabila kad mereka ditekan di laman utama.
+          Tanda ini hilang secara automatik selepas 24 jam, atau serta-merta
+          bila anda tekan butang di bawah.
+        </p>
+        <p class="hint"><strong id="hadirCountText">Memuatkan...</strong></p>
+        <button id="resetAttendanceBtn" class="btn-primary" type="button">Reset Kehadiran Sekarang</button>
+        <p id="resetAttendanceResult" class="hint" hidden></p>
+      </section>
+
     </div>
   </main>
 
@@ -142,7 +186,7 @@ Aiman,Fungsi,</pre>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script src="../firebase-config.js"></script>
-  <script src="admin.js"></script>
+  <script>document.write('<script src="../firebase-config.js?v=' + Date.now() + '"><\/script>');</script>
+  <script>document.write('<script src="admin.js?v=' + Date.now() + '"><\/script>');</script>
 </body>
 </html>

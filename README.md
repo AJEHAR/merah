@@ -18,6 +18,9 @@ rumah-sukan/
 │   ├── index.html        <- laman urus data sebenar (guru sahaja)
 │   ├── admin.css
 │   └── admin.js
+├── acara/
+│   ├── index.html        <- laman awam: senarai acara & peserta
+│   └── acara.js
 ├── style.css
 ├── app.js
 ├── firebase-config.js  <- sudah diisi dengan konfigurasi projek "sukanmerah"
@@ -32,7 +35,8 @@ rumah-sukan/
 ```
 
 Selepas dihoskan, laman admin boleh diakses di **`merah.syazr.com/admin`**
-(dengan atau tanpa `/` di hujung — kedua-duanya berfungsi).
+dan laman acara di **`merah.syazr.com/acara`** (dengan atau tanpa `/` di
+hujung — kedua-duanya berfungsi).
 
 ---
 
@@ -64,13 +68,25 @@ setup awal. Semua tambah/padam murid dibuat di `/admin`.
          allow read: if true;
          allow write: if request.auth != null;
        }
+       match /acara/{docId} {
+         allow read: if true;
+         allow write: if request.auth != null;
+       }
+       match /kehadiran/{docId} {
+         allow read: if true;
+         allow write: if request.resource.data.keys().hasOnly(['hadir', 'waktu'])
+                       && request.resource.data.hadir is bool;
+         allow delete: if true;
+       }
      }
    }
    ```
 
-   Maksudnya: **sesiapa boleh lihat** senarai murid di laman utama,
-   tetapi **hanya orang yang log masuk** (guru) boleh tambah/padam data
-   melalui `/admin`.
+   Maksudnya: **sesiapa boleh lihat** senarai murid & senarai acara di
+   laman utama, tetapi **hanya orang yang log masuk** (guru) boleh
+   tambah/padam data melalui `/admin`. Ganti `request.auth != null`
+   dengan semakan emel spesifik jika mahu hadkan kepada akaun tertentu
+   sahaja — lihat bahagian 4.
 
 ---
 
@@ -109,6 +125,9 @@ Ada 2 pilihan — boleh guna salah satu atau kedua-duanya sekali.
    allow write: if request.auth != null
      && request.auth.token.email in ["guru@gmail.com"];
    ```
+
+   Tampal syarat yang sama untuk **kedua-dua** `match /murid/{docId}`
+   dan `match /acara/{docId}` dalam Rules.
 
    (Senaraikan emel yang sama di kedua-dua tempat — `admin.js` dan
    Firestore Rules.)
@@ -191,9 +210,42 @@ Borang ringkas — nama, pilih kategori, nama fail gambar (pilihan).
 ### C) Padam murid
 Bahagian "Senarai semasa" — butang **Padam** di sebelah setiap nama.
 
+### D) Cipta acara & pilih peserta
+Bahagian **"4. Acara & Peserta"** di `/admin`:
+
+1. Taip nama acara (cth. `100 M Tahap 2`).
+2. Guna kotak carian untuk cari nama murid, tanda checkbox murid yang
+   menyertai acara tersebut (1 hingga 20 orang — ada gambar kecil &
+   label kategori supaya senang kenal pasti murid yang serupa nama).
+3. Klik **Simpan Acara**.
+4. Senarai acara sedia ada dipaparkan di bawah — klik **Edit** untuk
+   ubah nama/peserta, atau **Padam** untuk buang acara tersebut.
+
+Acara yang disimpan akan terus dipaparkan di laman awam
+**`merah.syazr.com/acara`** — nama acara sebagai tajuk, diikuti gambar
+& nama setiap peserta.
+
 ---
 
-## 8. Letak gambar murid
+## 8. Kehadiran (tap-to-mark)
+
+Di laman utama, **tekan kad murid** untuk tandakan dia hadir hari ini —
+kad akan tunjuk tanda ✓ hijau, dan label kategori bertukar jadi
+"Hadir". Tekan sekali lagi untuk buang tanda tersebut.
+
+- Tanda hadir **hilang automatik selepas 24 jam** dari masa ditekan
+  (dikira semasa paparan — rekod lama tak perlu dipadam secara manual,
+  cuma tak dipaparkan lagi selepas 24 jam).
+- Guru juga boleh tekan **"Reset Kehadiran Sekarang"** di `/admin`
+  (bahagian 5) untuk kosongkan semua tanda hadir serta-merta, tanpa
+  tunggu 24 jam.
+- Paparan kehadiran **kemas kini secara langsung** (real-time) — kalau
+  dua peranti buka laman yang sama serentak, tanda hadir akan
+  terpapar di kedua-duanya tanpa perlu reload.
+
+---
+
+## 9. Letak gambar murid
 
 Gambar diletak terus dalam repo, dalam folder kategori yang betul:
 
@@ -207,7 +259,7 @@ Nama fail mesti **sama persis** dengan yang ditaip dalam lajur/medan
 
 ---
 
-## 9. Uji di komputer sendiri (pilihan)
+## 10. Uji di komputer sendiri (pilihan)
 
 ```bash
 cd rumah-sukan

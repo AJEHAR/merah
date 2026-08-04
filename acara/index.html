@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Acara &amp; Peserta — Rumah Merah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script>document.write('<link rel="stylesheet" href="../style.css?v=' + Date.now() + '">');</script>
+</head>
+<body>
+
+  <header class="page-head">
+    <div class="head-inner">
+      <p class="eyebrow">Senarai Acara</p>
+      <h1>Acara &amp; Peserta</h1>
+      <p class="sub">Rumah Merah — semak siapa bertanding dalam acara apa.</p>
+    </div>
+  </header>
+
+  <nav class="page-nav" aria-label="Navigasi">
+    <a class="tab" href="../index.html">Kenali Ahli</a>
+    <a class="tab active" href="./">Acara &amp; Peserta</a>
+  </nav>
+
+  <main class="stage">
+    <div id="eventsWrap"></div>
+  </main>
+
+  <footer class="page-foot">
+    <p><a href="../index.html">← Kembali ke laman utama</a></p>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script>document.write('<script src="../firebase-config.js?v=' + Date.now() + '"><\/script>');</script>
+  <script>document.write('<script src="acara.js?v=' + Date.now() + '"><\/script>');</script>
+</body>
+</html>
