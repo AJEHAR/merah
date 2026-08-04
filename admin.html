@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Urus Data — Rumah Merah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <header class="page-head">
+    <div class="head-inner">
+      <p class="eyebrow">Panel Urus Data</p>
+      <h1>Rumah Merah</h1>
+      <p class="sub">Tambah, semak dan padam senarai ahli di sini.</p>
+    </div>
+  </header>
+
+  <main class="admin-stage">
+
+    <!-- LOGIN -->
+    <section id="loginBox" class="panel">
+      <h2>Log masuk</h2>
+      <p class="hint">Guna emel &amp; kata laluan yang telah didaftarkan di Firebase Authentication.</p>
+      <form id="loginForm" class="stack">
+        <label>Emel
+          <input type="email" id="loginEmail" required autocomplete="username">
+        </label>
+        <label>Kata laluan
+          <input type="password" id="loginPassword" required autocomplete="current-password">
+        </label>
+        <button type="submit" class="btn-primary">Log Masuk</button>
+        <p id="loginError" class="error-text" hidden></p>
+      </form>
+    </section>
+
+    <!-- ADMIN PANEL (hidden until logged in) -->
+    <div id="adminPanel" hidden>
+
+      <div class="admin-top">
+        <p id="whoami" class="hint"></p>
+        <button id="logoutBtn" class="btn-ghost">Log keluar</button>
+      </div>
+
+      <section class="panel">
+        <h2>1. Tambah ramai murid sekali gus (CSV)</h2>
+        <p class="hint">
+          Format 3 lajur: <code>nama,kategori,gambar</code>. Baris pertama (tajuk lajur) boleh dibuang atau dibiarkan — sistem akan kesan sendiri.
+          Kategori boleh ditaip macam biasa: <em>Pra</em>, <em>Fungsi</em>, <em>Tahap 1</em>, <em>Tahap 2</em> (besar/kecil huruf tak kisah).
+          Lajur <code>gambar</code> ialah nama fail gambar (cth. <code>ali.jpg</code>) yang akan anda muat naik ke repo — boleh dibiarkan kosong dan diisi kemudian.
+        </p>
+        <pre class="csv-example">nama,kategori,gambar
+Ali,Pra,ali.jpg
+Siti,Tahap 1,siti.png
+Aiman,Fungsi,</pre>
+        <a href="template.csv" download class="btn-ghost csv-download">⬇ Muat turun templat CSV</a>
+        <label class="file-drop">
+          <input type="file" id="csvFile" accept=".csv,text/csv">
+          <span>Klik untuk pilih fail CSV, atau tampal terus di bawah</span>
+        </label>
+        <textarea id="csvText" rows="6" placeholder="nama,kategori,gambar&#10;Ali,Pra,ali.jpg"></textarea>
+        <button id="parseCsvBtn" class="btn-primary">Semak Senarai</button>
+
+        <div id="csvPreviewWrap" hidden>
+          <h3>Pratonton (<span id="csvCount">0</span> baris)</h3>
+          <div class="table-wrap">
+            <table id="csvPreviewTable"></table>
+          </div>
+          <button id="confirmCsvBtn" class="btn-primary">Sahkan &amp; Tambah Semua</button>
+          <p id="csvResult" class="hint" hidden></p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>2. Tambah seorang murid</h2>
+        <form id="singleForm" class="stack stack-row">
+          <label>Nama panggilan
+            <input type="text" id="singleName" required placeholder="Ali">
+          </label>
+          <label>Kategori
+            <select id="singleCategory">
+              <option value="pra">Pra</option>
+              <option value="fungsi">Fungsi</option>
+              <option value="tahap1">Tahap 1</option>
+              <option value="tahap2">Tahap 2</option>
+            </select>
+          </label>
+          <label>Nama fail gambar (pilihan)
+            <input type="text" id="singleImage" placeholder="ali.jpg">
+          </label>
+          <button type="submit" class="btn-primary">Tambah</button>
+        </form>
+        <p id="singleResult" class="hint" hidden></p>
+      </section>
+
+      <section class="panel">
+        <h2>3. Senarai semasa</h2>
+        <div class="filter-row">
+          <label>Tapis kategori
+            <select id="filterCategory">
+              <option value="all">Semua</option>
+              <option value="pra">Pra</option>
+              <option value="fungsi">Fungsi</option>
+              <option value="tahap1">Tahap 1</option>
+              <option value="tahap2">Tahap 2</option>
+            </select>
+          </label>
+        </div>
+        <div class="table-wrap">
+          <table id="listTable">
+            <thead>
+              <tr><th>Nama</th><th>Kategori</th><th>Gambar</th><th></th></tr>
+            </thead>
+            <tbody id="listBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="page-foot">
+    <p><a href="index.html">← Kembali ke laman utama</a></p>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

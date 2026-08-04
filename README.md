@@ -1,7 +1,9 @@
-# Kenali Murid
+# Rumah Merah — Kenali Ahli
 
-Laman web mudah untuk mengenali murid mengikut 4 kategori: **Pra, Fungsi, Tahap 1, Tahap 2**.
-Gambar disimpan terus dalam repo GitHub. Senarai nama & kategori disimpan di **Firebase Firestore**.
+Laman web untuk mengenali ahli Rumah Merah mengikut 4 kategori: **Pra, Fungsi, Tahap 1, Tahap 2**.
+
+- **Gambar** → disimpan dalam repo GitHub (folder `images/`).
+- **Nama & kategori** → disimpan di Firebase Firestore, tapi **anda tak perlu buka Firebase Console setiap kali** — semuanya diuruskan melalui laman `admin.html` (upload CSV, tambah satu-satu, atau padam).
 
 ---
 
@@ -9,33 +11,43 @@ Gambar disimpan terus dalam repo GitHub. Senarai nama & kategori disimpan di **F
 
 ```
 rumah-sukan/
-├── index.html
+├── index.html          <- laman utama (untuk semua orang lihat)
+├── admin.html           <- laman urus data (untuk guru sahaja)
 ├── style.css
+├── admin.css
 ├── app.js
-├── firebase-config.js      <- isi dengan konfigurasi Firebase anda
+├── admin.js
+├── firebase-config.js  <- sudah diisi dengan konfigurasi projek "sukanmerah"
 ├── images/
-│   ├── pra/                <- gambar murid kategori Pra
-│   ├── fungsi/              <- gambar murid kategori Fungsi
-│   ├── tahap1/               <- gambar murid kategori Tahap 1
-│   └── tahap2/               <- gambar murid kategori Tahap 2
+│   ├── pra/
+│   ├── fungsi/
+│   ├── tahap1/
+│   └── tahap2/
 └── README.md
 ```
 
-Letak gambar murid dalam folder kategori masing-masing. Nama fail bebas
-(cth: `ali.jpg`, `siti_nurhaliza.png`) — nanti nama fail ini yang anda
-masukkan dalam Firestore (langkah 3).
+---
+
+## 2. Konsep asas (senang punya)
+
+Firebase Firestore ialah "senarai" data dalam talian. Bayangkan macam
+Excel simple:
+
+- **Collection** = nama jadual, dalam kes kita: `murid`
+- **Document** = satu baris dalam jadual itu = satu murid
+- Setiap document ada 3 medan: `nama`, `kategori`, `gambar`
+
+Anda **tidak perlu** faham/sentuh Firestore Console langsung. Console
+cuma digunakan **sekali sahaja** semasa setup (langkah 3 & 4 di bawah).
+Selepas itu, semua tambah/padam murid dibuat di `admin.html`.
 
 ---
 
-## 2. Setup Firebase (untuk simpan senarai nama)
+## 3. Setup sekali sahaja: Firestore Rules
 
-1. Pergi ke [console.firebase.google.com](https://console.firebase.google.com) → **Add project** → ikut *wizard* (boleh matikan Google Analytics, tak perlu).
-2. Dalam projek, pergi ke **Build → Firestore Database → Create database**.
-   - Pilih **Start in production mode**.
-   - Pilih lokasi server (contohnya `asia-southeast1`).
-3. Pergi ke **Firestore → Rules**, dan tukar kepada rules berikut supaya
-   sesiapa boleh **baca** senarai murid, tetapi tiada sesiapa boleh
-   menulis/ubah terus dari laman web (anda tambah data melalui Console sahaja):
+1. Buka [console.firebase.google.com](https://console.firebase.google.com) → pilih projek **sukanmerah**.
+2. **Build → Firestore Database → Create database** (kalau belum ada) → Start in **production mode** → pilih lokasi (cth. `asia-southeast1`).
+3. Pergi tab **Rules**, gantikan dengan:
 
    ```
    rules_version = '2';
@@ -43,87 +55,98 @@ masukkan dalam Firestore (langkah 3).
      match /databases/{database}/documents {
        match /murid/{docId} {
          allow read: if true;
-         allow write: if false;
+         allow write: if request.auth != null;
        }
      }
    }
    ```
 
-4. Pergi ke **Project settings (ikon gear) → General → Your apps → Add app → Web (</>)**.
-   Daftar nama app (cth: `kenali-murid`), tak perlu Firebase Hosting.
-5. Firebase akan beri anda kod `firebaseConfig` seperti ini:
-
-   ```js
-   const firebaseConfig = {
-     apiKey: "...",
-     authDomain: "...",
-     projectId: "...",
-     storageBucket: "...",
-     messagingSenderId: "...",
-     appId: "...",
-   };
-   ```
-
-   Salin nilai-nilai ini ke dalam fail **`firebase-config.js`** (gantikan
-   nilai `GANTI_...`).
+   Maksudnya: **sesiapa boleh lihat** senarai murid di `index.html`,
+   tetapi **hanya orang yang log masuk** (guru) boleh tambah/padam data
+   melalui `admin.html`.
 
 ---
 
-## 3. Tambah data murid
+## 4. Setup sekali sahaja: Akaun log masuk untuk admin.html
 
-Dalam Firebase Console → **Firestore Database → Start collection**.
+1. Dalam Firebase Console → **Build → Authentication → Get started**.
+2. Tab **Sign-in method** → aktifkan **Email/Password**.
+3. Tab **Users** → **Add user** → masukkan emel & kata laluan anda
+   sendiri (ini akaun log masuk untuk `admin.html`, bukan untuk murid).
 
-- Collection ID: `murid`
-- Untuk setiap murid, tambah satu **document** (boleh guna Auto-ID) dengan medan:
-
-  | Medan      | Jenis  | Contoh nilai         |
-  |------------|--------|-----------------------|
-  | `nama`     | string | `Ali`                |
-  | `kategori` | string | `pra` / `fungsi` / `tahap1` / `tahap2` |
-  | `gambar`   | string | `ali.jpg` (nama fail gambar dalam folder `images/<kategori>/`) |
-
-  Ulang untuk setiap murid. Ejaan `kategori` **mesti** sama persis dengan
-  salah satu daripada 4 nilai di atas (huruf kecil, tiada ruang) supaya
-  ia dipadankan dengan tab yang betul di laman web.
+Selesai — `firebase-config.js` dalam projek ini sudah diisi dengan
+konfigurasi projek "sukanmerah" anda, jadi tak perlu ubah apa-apa lagi
+di situ.
 
 ---
 
-## 4. Host di GitHub Pages
+## 5. Guna admin.html untuk tambah murid
 
-1. Buat repo baru di GitHub (cth: `kenali-murid`), dan muat naik semua
-   fail dalam folder `rumah-sukan/` (termasuk folder `images/` yang
-   sudah ada gambar, dan `firebase-config.js` yang sudah diisi).
-2. Pergi ke **Settings → Pages** dalam repo tersebut.
-3. Pada **Source**, pilih branch `main` dan folder `/ (root)` → **Save**.
-4. Tunggu 1-2 minit, laman web akan boleh diakses di:
+Buka `admin.html` (link "Urus data" ada di footer `index.html`), log
+masuk dengan emel/kata laluan dari langkah 4. Ada 3 cara tambah data:
+
+### A) Upload ramai sekali gus (CSV)
+Sediakan fail CSV / atau taip terus dalam kotak teks, format:
+
+```
+nama,kategori,gambar
+Ali,Pra,ali.jpg
+Siti,Tahap 1,siti.png
+Aiman,Fungsi,
+```
+
+Ada butang **⬇ Muat turun templat CSV** di `admin.html` (dan fail
+`template.csv` disertakan dalam repo ini) — buka dengan Excel/Google
+Sheets, isi baris untuk setiap murid, simpan semula sebagai CSV, terus
+upload.
+
+- Lajur `kategori` boleh ditaip macam biasa — "Pra", "tahap 1", "TAHAP2"
+  semua akan dikenali secara automatik.
+- Lajur `gambar` (nama fail gambar) boleh dibiarkan kosong dan diisi
+  kemudian — paparan akan tunjuk inisial nama sementara tiada gambar.
+- Klik **Semak Senarai** untuk pratonton, semak baris yang bermasalah
+  (ditanda merah), kemudian klik **Sahkan & Tambah Semua**.
+
+### B) Tambah seorang sahaja
+Guna borang ringkas — nama, pilih kategori, nama fail gambar (pilihan).
+
+### C) Padam murid
+Bahagian "Senarai semasa" memaparkan semua murid mengikut kategori,
+dengan butang **Padam** di sebelah setiap nama.
+
+---
+
+## 6. Letak gambar murid
+
+Gambar **tidak** melalui laman web — letak terus dalam repo GitHub,
+dalam folder kategori yang betul:
+
+```
+images/pra/ali.jpg
+images/tahap1/siti.png
+```
+
+Nama fail mesti **sama persis** dengan yang ditaip dalam lajur/medan
+`gambar` semasa tambah data (huruf besar/kecil turut dikira).
+
+---
+
+## 7. Host di GitHub Pages
+
+1. Buat repo baru di GitHub, muat naik semua fail dalam folder ini.
+2. **Settings → Pages** → Source: branch `main`, folder `/ (root)` → Save.
+3. Laman akan boleh diakses di:
    `https://<username-anda>.github.io/<nama-repo>/`
+4. Laman utama untuk semua orang: `.../index.html`
+   Laman urus data untuk guru: `.../admin.html`
 
 ---
 
-## 5. Nota keselamatan
-
-- `firebaseConfig` (apiKey dsb.) **selamat untuk didedahkan secara awam**
-  — ia bukan kata laluan, ia hanya pengenalan projek. Keselamatan
-  sebenar dikawal oleh **Firestore Rules** (langkah 2.3), yang kita
-  set sebagai baca-sahaja untuk umum.
-- Oleh sebab `allow write: if false`, data hanya boleh ditambah/diubah
-  melalui Firebase Console (bukan dari laman web awam) — ini elak
-  sesiapa iseng menambah/memadam data murid.
-- Jika kelak mahu tambah/kemaskini murid dengan lebih senang tanpa
-  buka Console setiap kali, boleh minta saya bina laman **admin**
-  berasingan yang dilindungi log masuk (Firebase Authentication).
-
----
-
-## 6. Uji di komputer sendiri (pilihan)
-
-Fail ini boleh terus dibuka dengan pelayar (double-click `index.html`),
-tetapi sesetengah pelayar sekat permintaan Firebase bila dibuka terus
-dari fail (`file://`). Lebih selamat jalankan pelayan tempatan:
+## 8. Uji di komputer sendiri (pilihan)
 
 ```bash
 cd rumah-sukan
 python3 -m http.server 8000
 ```
 
-Kemudian buka `http://localhost:8000` di pelayar.
+Buka `http://localhost:8000` di pelayar.
