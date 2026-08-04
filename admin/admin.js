@@ -50,6 +50,13 @@ function parseCsv(text) {
   return rows;
 }
 
+// SENARAI EMEL YANG DIBENARKAN log masuk sebagai admin.
+// Ini hanya untuk paparan mesej yang lebih jelas — sekatan SEBENAR
+// dikuatkuasakan oleh Firestore Rules (lihat README.md bahagian Google Sign-In).
+const ALLOWED_ADMIN_EMAILS = [
+  "g-39150004@moe-dl.edu.my",
+];
+
 // ---------------- Firebase refs ----------------
 const auth = firebase.auth();
 const db = firebase.firestore();
@@ -91,10 +98,29 @@ loginForm.addEventListener("submit", (e) => {
   });
 });
 
+const googleLoginBtn = document.getElementById("googleLoginBtn");
+googleLoginBtn.addEventListener("click", () => {
+  loginError.hidden = true;
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider).catch((err) => {
+    loginError.textContent = "Log masuk Google gagal: " + err.message;
+    loginError.hidden = false;
+  });
+});
+
 logoutBtn.addEventListener("click", () => auth.signOut());
 
 auth.onAuthStateChanged((user) => {
   if (user) {
+    const isAllowed =
+      ALLOWED_ADMIN_EMAILS.length === 0 || ALLOWED_ADMIN_EMAILS.includes(user.email);
+
+    if (!isAllowed) {
+      loginError.textContent = `Emel "${user.email}" tidak dibenarkan mengurus data ini.`;
+      loginError.hidden = false;
+      auth.signOut();
+      return;
+    }
     loginBox.hidden = true;
     adminPanel.hidden = false;
     whoami.textContent = `Log masuk sebagai: ${user.email}`;

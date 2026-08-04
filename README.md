@@ -74,12 +74,50 @@ setup awal. Semua tambah/padam murid dibuat di `/admin`.
 
 ---
 
-## 4. Setup sekali sahaja: Akaun log masuk untuk /admin
+## 4. Setup sekali sahaja: Cara log masuk untuk /admin
 
-1. Firebase Console → **Build → Authentication → Get started**.
-2. Tab **Sign-in method** → aktifkan **Email/Password**.
-3. Tab **Users** → **Add user** → masukkan emel & kata laluan anda
-   sendiri (akaun log masuk untuk `/admin`, bukan untuk murid).
+Ada 2 pilihan — boleh guna salah satu atau kedua-duanya sekali.
+
+### Pilihan A: Log masuk dengan Google (disyorkan — lebih senang)
+
+1. Firebase Console → **Build → Authentication → Get started** (jika belum).
+2. Tab **Sign-in method** → klik **Google** → **Enable** → pilih emel
+   sokongan (support email, biasanya emel anda sendiri) → **Save**.
+3. Buka `admin/admin.js` dalam repo, cari bahagian ini berhampiran
+   bahagian atas fail:
+
+   ```js
+   const ALLOWED_ADMIN_EMAILS = [
+     // "guru@gmail.com",
+   ];
+   ```
+
+   Nyahkomen dan isi dengan emel Google anda (dan emel guru lain yang
+   dibenarkan), contoh:
+
+   ```js
+   const ALLOWED_ADMIN_EMAILS = [
+     "guru@gmail.com",
+   ];
+   ```
+
+   Ini untuk mesej ralat yang jelas sahaja. Sekatan **sebenar** mesti
+   ditetapkan dalam Firestore Rules — lihat langkah 3, tukar rule
+   `write` kepada:
+
+   ```
+   allow write: if request.auth != null
+     && request.auth.token.email in ["guru@gmail.com"];
+   ```
+
+   (Senaraikan emel yang sama di kedua-dua tempat — `admin.js` dan
+   Firestore Rules.)
+
+### Pilihan B: Emel & kata laluan (Firebase Authentication)
+
+1. Tab **Sign-in method** → aktifkan **Email/Password**.
+2. Tab **Users** → **Add user** → masukkan emel & kata laluan pilihan
+   anda.
 
 `firebase-config.js` sudah diisi dengan konfigurasi projek "sukanmerah"
 anda — tak perlu ubah apa-apa di situ.
