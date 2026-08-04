@@ -54,7 +54,7 @@ function parseCsv(text) {
 // Ini hanya untuk paparan mesej yang lebih jelas — sekatan SEBENAR
 // dikuatkuasakan oleh Firestore Rules (lihat README.md bahagian Google Sign-In).
 const ALLOWED_ADMIN_EMAILS = [
-  "g-39150004@moe-dl.edu.my",
+  "ajehar@gmail.com",
 ];
 
 // ---------------- Firebase refs ----------------
