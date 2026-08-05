@@ -7,19 +7,19 @@
 .panel{
   background:var(--card);
   border:1px solid var(--line);
-  border-radius:16px;
+  border-radius:12px;
   padding:24px;
   margin-bottom:24px;
   box-shadow:var(--shadow);
 }
 .panel h2{
-  font-family:'Fredoka',sans-serif;
+  font-family:'Plus Jakarta Sans',sans-serif;
   font-size:19px;
   margin:0 0 6px;
   color:var(--brand);
 }
 .panel h3{
-  font-family:'Fredoka',sans-serif;
+  font-family:'Plus Jakarta Sans',sans-serif;
   font-size:15px;
   margin:16px 0 8px;
 }
@@ -76,14 +76,14 @@ textarea{
 }
 
 .btn-primary{
-  font-family:'Fredoka',sans-serif;
+  font-family:'Plus Jakarta Sans',sans-serif;
   font-weight:600;
   font-size:14px;
   background:var(--brand);
   color:#fff;
   border:none;
   padding:11px 22px;
-  border-radius:999px;
+  border-radius:8px;
   cursor:pointer;
   align-self:start;
   transition:opacity .15s ease;
@@ -105,7 +105,7 @@ textarea{
   color:var(--ink);
   border:1.5px solid var(--line);
   padding:11px 22px;
-  border-radius:999px;
+  border-radius:8px;
   cursor:pointer;
   transition:border-color .15s ease, box-shadow .15s ease;
 }
@@ -135,7 +135,7 @@ textarea{
   border:1.5px solid var(--line);
   color:var(--ink-soft);
   padding:8px 16px;
-  border-radius:999px;
+  border-radius:8px;
   cursor:pointer;
 }
 .btn-ghost:hover{border-color:var(--brand);color:var(--brand);}
@@ -214,7 +214,7 @@ tr:last-child td{border-bottom:none;}
 .row-cat{
   display:inline-block;
   padding:2px 9px;
-  border-radius:999px;
+  border-radius:8px;
   font-size:11px;
   font-family:'Space Mono',monospace;
   color:#fff;
@@ -297,4 +297,4 @@ tr:last-child td{border-bottom:none;}
   margin-bottom:8px;
   font-size:13px;
 }
-.acara-row strong{font-family:'Fredoka',sans-serif;font-weight:600;margin-right:8px;}
+.acara-row strong{font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;margin-right:8px;}
