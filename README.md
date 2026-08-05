@@ -15,12 +15,16 @@ rumah-sukan/
 ├── index.html          <- laman utama (untuk semua orang lihat)
 ├── admin.html           <- auto alih ke /admin/ (untuk sesiapa bookmark URL lama)
 ├── admin/
-│   ├── index.html        <- laman urus data sebenar (guru sahaja)
+│   ├── index.html        <- urus DATA MURID sahaja (perlu log masuk)
 │   ├── admin.css
 │   └── admin.js
 ├── acara/
 │   ├── index.html        <- laman awam: senarai acara & peserta
 │   └── acara.js
+├── urus/
+│   ├── index.html        <- cipta acara, tambah peserta, reset kehadiran (TANPA log masuk)
+│   ├── urus.css
+│   └── urus.js
 ├── style.css
 ├── app.js
 ├── firebase-config.js  <- sudah diisi dengan konfigurasi projek "sukanmerah"
@@ -34,9 +38,11 @@ rumah-sukan/
 └── README.md
 ```
 
-Selepas dihoskan, laman admin boleh diakses di **`merah.syazr.com/admin`**
-dan laman acara di **`merah.syazr.com/acara`** (dengan atau tanpa `/` di
-hujung — kedua-duanya berfungsi).
+Selepas dihoskan:
+- `merah.syazr.com` — laman utama, semua orang lihat & tanda kehadiran
+- `merah.syazr.com/acara` — paparan awam acara & peserta
+- `merah.syazr.com/urus` — cipta/urus acara & reset kehadiran (**tiada log masuk**)
+- `merah.syazr.com/admin` — urus data murid (nama/gambar) — **perlu log masuk**
 
 ---
 
@@ -70,7 +76,10 @@ setup awal. Semua tambah/padam murid dibuat di `/admin`.
        }
        match /acara/{docId} {
          allow read: if true;
-         allow write: if request.auth != null;
+         allow write: if request.resource.data.namaAcara is string
+                       && request.resource.data.pesertaIds is list
+                       && request.resource.data.pesertaIds.size() <= 20;
+         allow delete: if true;
        }
        match /kehadiran/{docId} {
          allow read: if true;
@@ -83,10 +92,19 @@ setup awal. Semua tambah/padam murid dibuat di `/admin`.
    ```
 
    Maksudnya: **sesiapa boleh lihat** senarai murid & senarai acara di
-   laman utama, tetapi **hanya orang yang log masuk** (guru) boleh
-   tambah/padam data melalui `/admin`. Ganti `request.auth != null`
-   dengan semakan emel spesifik jika mahu hadkan kepada akaun tertentu
-   sahaja — lihat bahagian 4.
+   laman utama. **Hanya orang yang log masuk** (guru) boleh
+   tambah/padam **murid** (nama & gambar) melalui `/admin`. Tapi
+   **`acara`** dan **`kehadiran`** sengaja dibiarkan terbuka tanpa log
+   masuk — sesiapa dengan pautan boleh cipta acara, tambah/buang
+   peserta, dan reset kehadiran melalui `/urus`, supaya guru lain boleh
+   bantu semasa hari sukan tanpa perlu akaun admin. Ini bermakna
+   sesiapa (termasuk murid, jika mereka jumpa pautan) turut boleh buat
+   perkara sama — kalau ini jadi isu kemudian, boleh minta saya tambah
+   sekatan PIN atau log masuk ringkas untuk `/urus`.
+
+   Ganti `request.auth != null` (untuk `murid`) dengan semakan emel
+   spesifik jika mahu hadkan kepada akaun tertentu sahaja — lihat
+   bahagian 4.
 
 ---
 
@@ -126,8 +144,9 @@ Ada 2 pilihan — boleh guna salah satu atau kedua-duanya sekali.
      && request.auth.token.email in ["guru@gmail.com"];
    ```
 
-   Tampal syarat yang sama untuk **kedua-dua** `match /murid/{docId}`
-   dan `match /acara/{docId}` dalam Rules.
+   Tampal syarat ini pada `match /murid/{docId}` sahaja — `acara` dan
+   `kehadiran` sengaja kekal terbuka (lihat bahagian 3) supaya
+   `/urus` boleh digunakan tanpa log masuk.
 
    (Senaraikan emel yang sama di kedua-dua tempat — `admin.js` dan
    Firestore Rules.)
@@ -210,24 +229,45 @@ Borang ringkas — nama, pilih kategori, nama fail gambar (pilihan).
 ### C) Padam murid
 Bahagian "Senarai semasa" — butang **Padam** di sebelah setiap nama.
 
-### D) Cipta acara & pilih peserta
-Bahagian **"4. Acara & Peserta"** di `/admin`:
+`/admin` **khusus untuk data murid** (nama & gambar) — memerlukan log
+masuk sebab data ni lebih sensitif. Acara, peserta, dan kehadiran
+diuruskan di `/urus` (lihat bahagian 8) yang **tidak** perlukan log
+masuk, supaya guru lain boleh bantu tanpa akaun admin.
 
-1. Taip nama acara (cth. `100 M Tahap 2`).
-2. Guna kotak carian untuk cari nama murid, tanda checkbox murid yang
-   menyertai acara tersebut (1 hingga 20 orang — ada gambar kecil &
-   label kategori supaya senang kenal pasti murid yang serupa nama).
-3. Klik **Simpan Acara**.
-4. Senarai acara sedia ada dipaparkan di bawah — klik **Edit** untuk
-   ubah nama/peserta, atau **Padam** untuk buang acara tersebut.
+---
+
+## 8. Guna /urus untuk acara, peserta & kehadiran
+
+Buka `merah.syazr.com/urus` — **tiada log masuk diperlukan**, sesiapa
+dengan pautan ini boleh guna terus.
+
+### Cipta acara & pilih peserta
+1. Taip nama acara (cth. `100 M Tahap 2`) dan klik **Simpan Acara**
+   (boleh simpan dahulu tanpa peserta).
+2. Untuk tambah peserta: klik **Edit** pada acara berkenaan dalam
+   senarai bawah, guna kotak carian untuk cari nama murid, tanda
+   checkbox murid yang menyertai (1 hingga 20 orang — ada gambar kecil
+   & label kategori supaya senang kenal pasti murid yang serupa nama),
+   klik **Kemaskini Acara**.
+3. Klik **Padam** untuk buang acara.
 
 Acara yang disimpan akan terus dipaparkan di laman awam
 **`merah.syazr.com/acara`** — nama acara sebagai tajuk, diikuti gambar
 & nama setiap peserta.
 
+### Reset Kehadiran
+Klik **"Reset Kehadiran Sekarang"** untuk kosongkan semua tanda hadir
+serta-merta, tanpa tunggu 24 jam (lihat bahagian 9).
+
+> ⚠️ Sebab laman ni terbuka tanpa log masuk, **sesiapa** dengan pautan
+> `/urus` (termasuk murid, jika mereka jumpa pautan) boleh cipta/padam
+> acara dan reset kehadiran. Ini keputusan sengaja untuk kemudahan
+> semasa hari sukan — kalau jadi isu kemudian, boleh minta saya tambah
+> PIN atau log masuk ringkas untuk laman ni.
+
 ---
 
-## 8. Kehadiran (tap-to-mark)
+## 9. Kehadiran (tap-to-mark)
 
 Di laman utama, **tekan kad murid** untuk tandakan dia hadir hari ini —
 kad akan tunjuk tanda ✓ hijau, dan label kategori bertukar jadi
@@ -236,16 +276,15 @@ kad akan tunjuk tanda ✓ hijau, dan label kategori bertukar jadi
 - Tanda hadir **hilang automatik selepas 24 jam** dari masa ditekan
   (dikira semasa paparan — rekod lama tak perlu dipadam secara manual,
   cuma tak dipaparkan lagi selepas 24 jam).
-- Guru juga boleh tekan **"Reset Kehadiran Sekarang"** di `/admin`
-  (bahagian 5) untuk kosongkan semua tanda hadir serta-merta, tanpa
-  tunggu 24 jam.
+- Boleh juga tekan **"Reset Kehadiran Sekarang"** di `/urus` untuk
+  kosongkan semua tanda hadir serta-merta, tanpa tunggu 24 jam.
 - Paparan kehadiran **kemas kini secara langsung** (real-time) — kalau
   dua peranti buka laman yang sama serentak, tanda hadir akan
   terpapar di kedua-duanya tanpa perlu reload.
 
 ---
 
-## 9. Letak gambar murid
+## 10. Letak gambar murid
 
 Gambar diletak terus dalam repo, dalam folder kategori yang betul:
 
@@ -259,7 +298,7 @@ Nama fail mesti **sama persis** dengan yang ditaip dalam lajur/medan
 
 ---
 
-## 10. Uji di komputer sendiri (pilihan)
+## 11. Uji di komputer sendiri (pilihan)
 
 ```bash
 cd rumah-sukan

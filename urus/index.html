@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Urus Acara &amp; Kehadiran — Rumah Merah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script>document.write('<link rel="stylesheet" href="../style.css?v=' + Date.now() + '">');</script>
+<script>document.write('<link rel="stylesheet" href="urus.css?v=' + Date.now() + '">');</script>
+</head>
+<body>
+
+  <header class="page-head">
+    <div class="head-inner">
+      <p class="eyebrow">Kawalan Terbuka</p>
+      <h1>Urus Acara &amp; Kehadiran</h1>
+      <p class="sub">Sesiapa boleh guna laman ini — tiada log masuk diperlukan.</p>
+    </div>
+  </header>
+
+  <nav class="page-nav" aria-label="Navigasi">
+    <a class="tab" href="../index.html">Kenali Ahli</a>
+    <a class="tab" href="../acara/">Acara &amp; Peserta</a>
+    <a class="tab active" href="./">Urus</a>
+  </nav>
+
+  <main class="admin-stage">
+
+    <section class="panel">
+      <h2>Cipta acara &amp; tambah peserta</h2>
+      <p class="hint">
+        Taip nama acara (cth. <em>"100 M Tahap 2"</em>) dan simpan dahulu
+        — boleh tanpa peserta. Tandakan murid kemudian (1 hingga 20 orang)
+        melalui butang <strong>Edit</strong> di senarai bawah. Papar terus
+        di laman <a href="../acara/">/acara</a>.
+      </p>
+      <form id="acaraForm" class="stack">
+        <label>Nama acara
+          <input type="text" id="acaraNama" required placeholder="100 M Tahap 2">
+        </label>
+
+        <div class="peserta-picker">
+          <input type="text" id="pesertaSearch" placeholder="Cari nama murid...">
+          <p class="hint" id="pesertaCountHint">0 / 20 dipilih</p>
+          <div id="pesertaList" class="peserta-list"></div>
+        </div>
+
+        <div class="acara-form-actions">
+          <button type="submit" id="saveAcaraBtn" class="btn-primary">Simpan Acara</button>
+          <button type="button" id="cancelEditAcaraBtn" class="btn-ghost" hidden>Batal Edit</button>
+        </div>
+        <p id="acaraResult" class="hint" hidden></p>
+      </form>
+
+      <h3>Senarai acara sedia ada</h3>
+      <div id="acaraListWrap"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Kehadiran</h2>
+      <p class="hint">
+        Murid ditanda hadir apabila kad mereka ditekan di
+        <a href="../index.html">laman utama</a>. Tanda ini hilang
+        secara automatik selepas 24 jam, atau serta-merta bila anda
+        tekan butang di bawah.
+      </p>
+      <p class="hint"><strong id="hadirCountText">Memuatkan...</strong></p>
+      <button id="resetAttendanceBtn" class="btn-primary" type="button">Reset Kehadiran Sekarang</button>
+      <p id="resetAttendanceResult" class="hint" hidden></p>
+    </section>
+
+  </main>
+
+  <footer class="page-foot">
+    <p><a href="../index.html">← Kembali ke laman utama</a></p>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script>document.write('<script src="../firebase-config.js?v=' + Date.now() + '"><\/script>');</script>
+  <script>document.write('<script src="urus.js?v=' + Date.now() + '"><\/script>');</script>
+</body>
+</html>

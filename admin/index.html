@@ -136,46 +136,13 @@ Aiman,Fungsi,</pre>
       </section>
 
       <section class="panel">
-        <h2>4. Acara &amp; Peserta</h2>
+        <h2>4. Acara, Peserta &amp; Kehadiran</h2>
         <p class="hint">
-          Cipta acara (cth. <em>"100 M Tahap 2"</em>) dahulu, kemudian
-          tandakan murid yang menyertainya (1 hingga 20 orang) — boleh
-          simpan dulu tanpa peserta dan tambah kemudian melalui butang
-          <strong>Edit</strong> di senarai bawah. Senarai ini akan
-          dipaparkan di laman <a href="../acara/">/acara</a>.
+          Cipta acara, tambah peserta, dan reset kehadiran kini diuruskan
+          di laman berasingan supaya guru lain (tanpa akaun admin) boleh
+          bantu kemas kini semasa hari sukan.
         </p>
-        <form id="acaraForm" class="stack">
-          <label>Nama acara
-            <input type="text" id="acaraNama" required placeholder="100 M Tahap 2">
-          </label>
-
-          <div class="peserta-picker">
-            <input type="text" id="pesertaSearch" placeholder="Cari nama murid...">
-            <p class="hint" id="pesertaCountHint">0 / 20 dipilih</p>
-            <div id="pesertaList" class="peserta-list"></div>
-          </div>
-
-          <div class="acara-form-actions">
-            <button type="submit" id="saveAcaraBtn" class="btn-primary">Simpan Acara</button>
-            <button type="button" id="cancelEditAcaraBtn" class="btn-ghost" hidden>Batal Edit</button>
-          </div>
-          <p id="acaraResult" class="hint" hidden></p>
-        </form>
-
-        <h3>Senarai acara sedia ada</h3>
-        <div id="acaraListWrap"></div>
-      </section>
-
-      <section class="panel">
-        <h2>5. Kehadiran</h2>
-        <p class="hint">
-          Murid ditanda hadir apabila kad mereka ditekan di laman utama.
-          Tanda ini hilang secara automatik selepas 24 jam, atau serta-merta
-          bila anda tekan butang di bawah.
-        </p>
-        <p class="hint"><strong id="hadirCountText">Memuatkan...</strong></p>
-        <button id="resetAttendanceBtn" class="btn-primary" type="button">Reset Kehadiran Sekarang</button>
-        <p id="resetAttendanceResult" class="hint" hidden></p>
+        <a href="../urus/" class="btn-primary" style="display:inline-block;text-decoration:none;">Buka /urus →</a>
       </section>
 
     </div>
