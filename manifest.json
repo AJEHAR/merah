@@ -2,7 +2,7 @@
   "name": "Rumah Merah — Kenali Ahli",
   "short_name": "Rumah Merah",
   "description": "Kenali ahli, acara & kehadiran Rumah Merah",
-  "start_url": "/",
+  "start_url": "/merahteam/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#FBF3F1",

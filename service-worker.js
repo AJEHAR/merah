@@ -6,7 +6,7 @@
 // cuma digunakan sebagai fallback bila peranti tiada internet.
 
 const CACHE_NAME = "rumah-merah-shell-v1";
-const SHELL_FILES = ["/", "/style.css", "/icons/icon-192.png", "/icons/icon-512.png"];
+const SHELL_FILES = ["/merahteam/", "/style.css", "/icons/icon-192.png", "/icons/icon-512.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(

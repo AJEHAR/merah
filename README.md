@@ -12,7 +12,10 @@ Laman web untuk mengenali ahli Rumah Merah mengikut 4 kategori: **Pra, Fungsi, T
 
 ```
 rumah-sukan/
-├── index.html          <- laman utama (untuk semua orang lihat)
+├── index.html          <- auto alih ke /merahteam/ (root domain)
+├── merahteam/
+│   ├── index.html        <- laman utama (untuk semua orang lihat)
+│   └── app.js
 ├── admin.html           <- auto alih ke /admin/ (untuk sesiapa bookmark URL lama)
 ├── admin/
 │   ├── index.html        <- urus DATA MURID & GURU/PPM (perlu log masuk)
@@ -29,7 +32,6 @@ rumah-sukan/
 │   ├── urus.css
 │   └── urus.js
 ├── style.css
-├── app.js
 ├── firebase-config.js  <- sudah diisi dengan konfigurasi projek "sukanmerah"
 ├── template.csv         <- contoh templat untuk diisi & upload
 ├── manifest.json         <- PWA (install jadi app)
@@ -49,7 +51,8 @@ rumah-sukan/
 ```
 
 Selepas dihoskan:
-- `merah.syazr.com` — laman utama, semua orang lihat & tanda kehadiran
+- `merah.syazr.com` — auto alih terus ke `/merahteam`
+- `merah.syazr.com/merahteam` — laman utama, semua orang lihat & tanda kehadiran
 - `merah.syazr.com/acara` — paparan awam acara & peserta
 - `merah.syazr.com/guru` — paparan awam guru & PPM
 - `merah.syazr.com/urus` — cipta/urus acara & reset kehadiran (**tiada log masuk**)
