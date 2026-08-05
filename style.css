@@ -37,7 +37,7 @@ body{
 .page-head{
   padding:16px 24px;
   background:var(--card);
-  border-bottom:1px solid var(--line);
+  border-bottom:2px solid var(--brand);
 }
 .head-inner{
   max-width:640px;
@@ -59,7 +59,7 @@ h1{
   font-size:19px;
   margin:0;
   letter-spacing:-0.01em;
-  color:var(--ink);
+  color:var(--brand);
 }
 
 /* ---------- page intro (tajuk & keterangan setiap laman) ---------- */
@@ -121,18 +121,28 @@ h1{
   display:flex;
   gap:6px;
   justify-content:center;
-  flex-wrap:wrap;
-  padding:14px 20px 0;
+  flex-wrap:nowrap;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  padding:14px 20px;
   background:var(--card);
+  scrollbar-width:none;
 }
+.page-nav::-webkit-scrollbar{display:none;}
 .page-nav a.tab{
   display:inline-block;
+  flex:none;
   text-decoration:none;
+  white-space:nowrap;
 }
 .page-nav a.tab.active{
-  background:var(--ink);
-  border-color:var(--ink);
+  background:var(--brand);
+  border-color:var(--brand);
   color:#fff;
+}
+.page-nav a.tab.gear{
+  font-size:16px;
+  padding:8px 14px;
 }
 
 /* ---------- search box ---------- */
