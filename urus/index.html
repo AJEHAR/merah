@@ -6,6 +6,11 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
+<meta name="theme-color" content="#B3122B">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16.png">
 <title>Urus Acara &amp; Kehadiran — Rumah Merah</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -16,6 +21,7 @@
 
   <header class="page-head">
     <div class="head-inner">
+      <img src="/icons/logo-header.png" alt="Logo Rumah Merah" class="brand-logo">
       <p class="eyebrow">Kawalan Terbuka</p>
       <h1>Urus Acara &amp; Kehadiran</h1>
       <p class="sub">Sesiapa boleh guna laman ini — tiada log masuk diperlukan.</p>
@@ -25,6 +31,7 @@
   <nav class="page-nav" aria-label="Navigasi">
     <a class="tab" href="../index.html">Kenali Ahli</a>
     <a class="tab" href="../acara/">Acara &amp; Peserta</a>
+    <a class="tab" href="../guru/">Guru &amp; PPM</a>
     <a class="tab active" href="./">Urus</a>
   </nav>
 
@@ -83,5 +90,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script>document.write('<script src="../firebase-config.js?v=' + Date.now() + '"><\/script>');</script>
   <script>document.write('<script src="urus.js?v=' + Date.now() + '"><\/script>');</script>
+  <script>if ("serviceWorker" in navigator) navigator.serviceWorker.register("/service-worker.js");</script>
 </body>
 </html>

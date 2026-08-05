@@ -11,39 +11,36 @@
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16.png">
-<title>Rumah Merah — Kenali Ahli</title>
+<title>Guru &amp; PPM — Rumah Merah</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<script>document.write('<link rel="stylesheet" href="style.css?v=' + Date.now() + '">');</script>
+<script>document.write('<link rel="stylesheet" href="../style.css?v=' + Date.now() + '">');</script>
 </head>
 <body>
 
   <header class="page-head">
     <div class="head-inner">
       <img src="/icons/logo-header.png" alt="Logo Rumah Merah" class="brand-logo">
-      <p class="eyebrow">Kad Pengenalan Ahli</p>
-      <h1>Rumah Merah</h1>
-      <p class="sub">Tatal ikut kategori untuk mengenali wajah dan nama ahli.</p>
-      <p class="sub sub-hint">👆 Tekan kad murid untuk tandakan kehadiran hari ini.</p>
+      <p class="eyebrow">Kad Pengenalan Staf</p>
+      <h1>Guru &amp; PPM</h1>
+      <p class="sub">Kenali guru dan Pembantu Pengurusan Murid Rumah Merah.</p>
     </div>
   </header>
 
   <nav class="page-nav" aria-label="Navigasi">
-    <a class="tab active" href="./">Kenali Ahli</a>
-    <a class="tab" href="acara/">Acara &amp; Peserta</a>
-    <a class="tab" href="guru/">Guru &amp; PPM</a>
-    <a class="tab" href="urus/">Urus</a>
+    <a class="tab" href="../index.html">Kenali Ahli</a>
+    <a class="tab" href="../acara/">Acara &amp; Peserta</a>
+    <a class="tab active" href="./">Guru &amp; PPM</a>
+    <a class="tab" href="../urus/">Urus</a>
   </nav>
 
-  <nav class="tabs" id="tabs" aria-label="Kategori murid">
-    <button class="tab" data-cat="pra" aria-current="true">Pra</button>
-    <button class="tab" data-cat="fungsi">Fungsi</button>
-    <button class="tab" data-cat="tahap1">Tahap 1</button>
-    <button class="tab" data-cat="tahap2">Tahap 2</button>
+  <nav class="tabs" id="tabs" aria-label="Peranan staf">
+    <button class="tab" data-cat="guru" aria-current="true">Guru</button>
+    <button class="tab" data-cat="ppm">PPM</button>
   </nav>
 
   <div class="search-wrap">
-    <input type="search" id="searchBox" placeholder="🔍 Cari nama murid dalam kategori ini...">
+    <input type="search" id="searchBox" placeholder="🔍 Cari nama...">
   </div>
 
   <main class="stage">
@@ -52,19 +49,19 @@
     </div>
     <div class="grid" id="grid"></div>
     <div class="empty-state" id="emptyState" hidden>
-      <p>Belum ada murid dalam kategori ini.</p>
-      <p class="empty-sub">Tambah data melalui Firebase Console — lihat README.md.</p>
+      <p>Belum ada staf dalam senarai ini.</p>
+      <p class="empty-sub">Tambah data melalui panel admin.</p>
     </div>
   </main>
 
   <footer class="page-foot">
-    <p>Dibina untuk guru mengenali ahli Rumah Merah. · <a href="admin/">Urus data</a></p>
+    <p><a href="../index.html">← Kembali ke laman utama</a></p>
   </footer>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script>document.write('<script src="firebase-config.js?v=' + Date.now() + '"><\/script>');</script>
-  <script>document.write('<script src="app.js?v=' + Date.now() + '"><\/script>');</script>
+  <script>document.write('<script src="../firebase-config.js?v=' + Date.now() + '"><\/script>');</script>
+  <script>document.write('<script src="guru.js?v=' + Date.now() + '"><\/script>');</script>
   <script>if ("serviceWorker" in navigator) navigator.serviceWorker.register("/service-worker.js");</script>
 </body>
 </html>

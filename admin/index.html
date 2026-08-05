@@ -6,6 +6,11 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
+<meta name="theme-color" content="#B3122B">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16.png">
 <title>Urus Data — Rumah Merah</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -16,6 +21,7 @@
 
   <header class="page-head">
     <div class="head-inner">
+      <img src="/icons/logo-header.png" alt="Logo Rumah Merah" class="brand-logo">
       <p class="eyebrow">Panel Urus Data</p>
       <h1>Rumah Merah</h1>
       <p class="sub">Tambah, semak dan padam senarai ahli di sini.</p>
@@ -136,7 +142,50 @@ Aiman,Fungsi,</pre>
       </section>
 
       <section class="panel">
-        <h2>4. Acara, Peserta &amp; Kehadiran</h2>
+        <h2>4. Guru &amp; PPM</h2>
+        <p class="hint">
+          Sama macam senarai murid, tapi untuk staf. Simpan gambar dalam
+          repo di <code>images/guru/</code> atau <code>images/ppm/</code>.
+        </p>
+        <form id="guruSingleForm" class="stack stack-row">
+          <label>Nama panggilan
+            <input type="text" id="guruSingleName" required placeholder="Cikgu Ali">
+          </label>
+          <label>Peranan
+            <select id="guruSingleRole">
+              <option value="guru">Guru</option>
+              <option value="ppm">PPM</option>
+            </select>
+          </label>
+          <label>Nama fail gambar (pilihan)
+            <input type="text" id="guruSingleImage" placeholder="cikguali.jpg">
+          </label>
+          <button type="submit" class="btn-primary">Tambah</button>
+        </form>
+        <p id="guruSingleResult" class="hint" hidden></p>
+
+        <h3>Senarai semasa</h3>
+        <div class="filter-row">
+          <label>Tapis peranan
+            <select id="guruFilterRole">
+              <option value="all">Semua</option>
+              <option value="guru">Guru</option>
+              <option value="ppm">PPM</option>
+            </select>
+          </label>
+        </div>
+        <div class="table-wrap">
+          <table id="guruListTable">
+            <thead>
+              <tr><th>Nama</th><th>Peranan</th><th>Gambar</th><th></th></tr>
+            </thead>
+            <tbody id="guruListBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>5. Acara, Peserta &amp; Kehadiran</h2>
         <p class="hint">
           Cipta acara, tambah peserta, dan reset kehadiran kini diuruskan
           di laman berasingan supaya guru lain (tanpa akaun admin) boleh
@@ -157,5 +206,6 @@ Aiman,Fungsi,</pre>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script>document.write('<script src="../firebase-config.js?v=' + Date.now() + '"><\/script>');</script>
   <script>document.write('<script src="admin.js?v=' + Date.now() + '"><\/script>');</script>
+  <script>if ("serviceWorker" in navigator) navigator.serviceWorker.register("/service-worker.js");</script>
 </body>
 </html>

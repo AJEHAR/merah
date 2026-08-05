@@ -15,12 +15,15 @@ rumah-sukan/
 ├── index.html          <- laman utama (untuk semua orang lihat)
 ├── admin.html           <- auto alih ke /admin/ (untuk sesiapa bookmark URL lama)
 ├── admin/
-│   ├── index.html        <- urus DATA MURID sahaja (perlu log masuk)
+│   ├── index.html        <- urus DATA MURID & GURU/PPM (perlu log masuk)
 │   ├── admin.css
 │   └── admin.js
 ├── acara/
 │   ├── index.html        <- laman awam: senarai acara & peserta
 │   └── acara.js
+├── guru/
+│   ├── index.html        <- laman awam: senarai guru & PPM
+│   └── guru.js
 ├── urus/
 │   ├── index.html        <- cipta acara, tambah peserta, reset kehadiran (TANPA log masuk)
 │   ├── urus.css
@@ -29,20 +32,28 @@ rumah-sukan/
 ├── app.js
 ├── firebase-config.js  <- sudah diisi dengan konfigurasi projek "sukanmerah"
 ├── template.csv         <- contoh templat untuk diisi & upload
+├── manifest.json         <- PWA (install jadi app)
+├── service-worker.js     <- PWA (network-first, fallback cache bila offline)
+├── icons/
+│   ├── icon-192.png
+│   └── icon-512.png
 ├── CNAME                 <- domain custom (merah.syazr.com)
 ├── images/
 │   ├── pra/
 │   ├── fungsi/
 │   ├── tahap1/
-│   └── tahap2/
+│   ├── tahap2/
+│   ├── guru/
+│   └── ppm/
 └── README.md
 ```
 
 Selepas dihoskan:
 - `merah.syazr.com` — laman utama, semua orang lihat & tanda kehadiran
 - `merah.syazr.com/acara` — paparan awam acara & peserta
+- `merah.syazr.com/guru` — paparan awam guru & PPM
 - `merah.syazr.com/urus` — cipta/urus acara & reset kehadiran (**tiada log masuk**)
-- `merah.syazr.com/admin` — urus data murid (nama/gambar) — **perlu log masuk**
+- `merah.syazr.com/admin` — urus data murid & guru/PPM (nama/gambar) — **perlu log masuk**
 
 ---
 
@@ -72,7 +83,13 @@ setup awal. Semua tambah/padam murid dibuat di `/admin`.
      match /databases/{database}/documents {
        match /murid/{docId} {
          allow read: if true;
-         allow write: if request.auth != null;
+         allow write: if request.auth != null
+           && request.auth.token.email in ["merah@gmail.com"];
+       }
+       match /guru/{docId} {
+         allow read: if true;
+         allow write: if request.auth != null
+           && request.auth.token.email in ["merah@gmail.com"];
        }
        match /acara/{docId} {
          allow read: if true;
@@ -92,7 +109,7 @@ setup awal. Semua tambah/padam murid dibuat di `/admin`.
    ```
 
    Maksudnya: **sesiapa boleh lihat** senarai murid & senarai acara di
-   laman utama. **Hanya orang yang log masuk** (guru) boleh
+   laman utama. **Hanya `merah@gmail.com`** yang log masuk boleh
    tambah/padam **murid** (nama & gambar) melalui `/admin`. Tapi
    **`acara`** dan **`kehadiran`** sengaja dibiarkan terbuka tanpa log
    masuk — sesiapa dengan pautan boleh cipta acara, tambah/buang
@@ -102,9 +119,8 @@ setup awal. Semua tambah/padam murid dibuat di `/admin`.
    perkara sama — kalau ini jadi isu kemudian, boleh minta saya tambah
    sekatan PIN atau log masuk ringkas untuk `/urus`.
 
-   Ganti `request.auth != null` (untuk `murid`) dengan semakan emel
-   spesifik jika mahu hadkan kepada akaun tertentu sahaja — lihat
-   bahagian 4.
+   Kalau nak tambah lebih dari satu admin, senaraikan beberapa emel:
+   `request.auth.token.email in ["merah@gmail.com", "guru2@gmail.com"]`
 
 ---
 
@@ -229,8 +245,14 @@ Borang ringkas — nama, pilih kategori, nama fail gambar (pilihan).
 ### C) Padam murid
 Bahagian "Senarai semasa" — butang **Padam** di sebelah setiap nama.
 
-`/admin` **khusus untuk data murid** (nama & gambar) — memerlukan log
-masuk sebab data ni lebih sensitif. Acara, peserta, dan kehadiran
+### D) Tambah Guru & PPM
+Bahagian **"4. Guru & PPM"** — borang ringkas sama macam murid: nama,
+pilih peranan (Guru/PPM), nama fail gambar (pilihan). Letak gambar
+dalam repo di `images/guru/` atau `images/ppm/`. Papar terus di laman
+awam `merah.syazr.com/guru`.
+
+`/admin` **khusus untuk data murid & staf** (nama & gambar) — memerlukan
+log masuk sebab data ni lebih sensitif. Acara, peserta, dan kehadiran
 diuruskan di `/urus` (lihat bahagian 8) yang **tidak** perlukan log
 masuk, supaya guru lain boleh bantu tanpa akaun admin.
 
@@ -298,7 +320,33 @@ Nama fail mesti **sama persis** dengan yang ditaip dalam lajur/medan
 
 ---
 
-## 11. Uji di komputer sendiri (pilihan)
+## 11. Install jadi App (PWA)
+
+Laman ini boleh "dipasang" macam app biasa (ada ikon sendiri, buka
+tanpa bar alamat browser).
+
+- **Android (Chrome):** buka `merah.syazr.com` → menu ⋮ → **"Add to
+  Home screen"** / **"Install app"**.
+- **iPhone (Safari):** buka laman → ikon **Share** (⬆) → **"Add to
+  Home Screen"**.
+- **Desktop (Chrome/Edge):** ikon "install" (⊕) akan muncul di hujung
+  bar alamat.
+
+Ikon app (`icons/icon-192.png`, `icons/icon-512.png`) ialah ikon
+ringkas "RM" atas latar merah jenama — boleh ganti dengan logo Rumah
+Merah sebenar bila-bila masa, asalkan nama fail & saiz (192×192,
+512×512 piksel) kekal sama.
+
+**Nota:** `manifest.json` & `service-worker.js` guna path mutlak
+(`/manifest.json`, `/icons/...`) — ini berfungsi sebab laman dihoskan
+di root domain custom (`merah.syazr.com`). Kalau suatu hari anda host
+tanpa domain custom (cth. `username.github.io/nama-repo/`), path ini
+perlu ditukar kepada laluan relatif — boleh minta saya betulkan bila
+sampai masanya.
+
+---
+
+## 12. Uji di komputer sendiri (pilihan)
 
 ```bash
 cd rumah-sukan

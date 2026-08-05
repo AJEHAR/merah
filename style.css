@@ -13,6 +13,10 @@
   --tahap1:#8E1B2C;
   --tahap2:#5C1420;
 
+  /* staf — keluarga emas, sengaja beza dari murid */
+  --guru:#B9862C;
+  --ppm:#8C6A22;
+
   --accent: var(--pra);
   --shadow: 0 10px 24px -12px rgba(94,20,20,0.30);
 }
@@ -38,6 +42,14 @@ body{
     var(--paper);
 }
 .head-inner{max-width:640px;margin:0 auto;}
+.brand-logo{
+  width:88px;
+  height:88px;
+  object-fit:contain;
+  margin:0 auto 14px;
+  display:block;
+  filter:drop-shadow(0 4px 10px rgba(94,20,20,0.25));
+}
 .eyebrow{
   font-family:'Space Mono',monospace;
   font-size:12px;
@@ -96,6 +108,8 @@ h1{
 .tab[data-cat="fungsi"].active{background:var(--fungsi);border-color:var(--fungsi);color:#fff;}
 .tab[data-cat="tahap1"].active{background:var(--tahap1);border-color:var(--tahap1);color:#fff;}
 .tab[data-cat="tahap2"].active{background:var(--tahap2);border-color:var(--tahap2);color:#fff;}
+.tab[data-cat="guru"].active{background:var(--guru);border-color:var(--guru);color:#fff;}
+.tab[data-cat="ppm"].active{background:var(--ppm);border-color:var(--ppm);color:#fff;}
 
 /* ---------- page-level nav (Kenali Ahli / Acara & Peserta) ---------- */
 .page-nav{
@@ -113,6 +127,24 @@ h1{
   border-color:var(--brand, var(--pra));
   color:#fff;
 }
+
+/* ---------- search box ---------- */
+.search-wrap{
+  max-width:1080px;
+  margin:0 auto;
+  padding:16px 24px 0;
+}
+.search-wrap input[type="search"]{
+  width:100%;
+  font-family:'Inter',sans-serif;
+  font-size:14px;
+  padding:11px 16px;
+  border:1.5px solid var(--line);
+  border-radius:999px;
+  background:#fff;
+  color:var(--ink);
+}
+.search-wrap input:focus{outline:none;border-color:var(--brand);}
 
 /* ---------- stage ---------- */
 .stage{
@@ -162,6 +194,8 @@ h1{
 .badge[data-cat="fungsi"]{--accent:var(--fungsi);}
 .badge[data-cat="tahap1"]{--accent:var(--tahap1);}
 .badge[data-cat="tahap2"]{--accent:var(--tahap2);}
+.badge[data-cat="guru"]{--accent:var(--guru);}
+.badge[data-cat="ppm"]{--accent:var(--ppm);}
 
 .hole{
   width:14px;height:14px;

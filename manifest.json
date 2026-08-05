@@ -1,0 +1,14 @@
+{
+  "name": "Rumah Merah — Kenali Ahli",
+  "short_name": "Rumah Merah",
+  "description": "Kenali ahli, acara & kehadiran Rumah Merah",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FBF3F1",
+  "theme_color": "#B3122B",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

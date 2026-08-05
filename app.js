@@ -27,11 +27,13 @@ const HADIR_TTL_MS = 24 * 60 * 60 * 1000; // 24 jam
 let allStudents = [];
 let activeCategory = "pra";
 let attendanceMap = {}; // { [muridId]: millis }
+let searchQuery = "";
 
 const gridEl = document.getElementById("grid");
 const countEl = document.getElementById("countText");
 const emptyEl = document.getElementById("emptyState");
 const tabsEl = document.getElementById("tabs");
+const searchBox = document.getElementById("searchBox");
 
 function initials(name) {
   return (name || "")
@@ -49,7 +51,10 @@ function isHadir(id) {
 }
 
 function renderStudents(category) {
-  const list = allStudents.filter((s) => s.kategori === category);
+  let list = allStudents.filter((s) => s.kategori === category);
+  if (searchQuery) {
+    list = list.filter((s) => (s.nama || "").toLowerCase().includes(searchQuery));
+  }
   const hadirCount = list.filter((s) => isHadir(s.id)).length;
 
   countEl.textContent = `${CATEGORY_LABELS[category]} — ${list.length} murid · ${hadirCount} hadir`;
@@ -57,6 +62,9 @@ function renderStudents(category) {
 
   if (list.length === 0) {
     emptyEl.hidden = false;
+    emptyEl.querySelector("p").textContent = searchQuery
+      ? `Tiada murid dijumpai untuk "${searchQuery}".`
+      : "Belum ada murid dalam kategori ini.";
     return;
   }
   emptyEl.hidden = true;
@@ -123,6 +131,11 @@ tabsEl.addEventListener("click", (e) => {
   const btn = e.target.closest(".tab");
   if (!btn) return;
   setActiveTab(btn.dataset.cat);
+});
+
+searchBox.addEventListener("input", () => {
+  searchQuery = searchBox.value.trim().toLowerCase();
+  renderStudents(activeCategory);
 });
 
 function startAttendanceListener(db) {

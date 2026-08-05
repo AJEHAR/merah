@@ -125,6 +125,7 @@ auth.onAuthStateChanged((user) => {
     adminPanel.hidden = false;
     whoami.textContent = `Log masuk sebagai: ${user.email}`;
     loadList();
+    loadGuruList();
   } else {
     loginBox.hidden = false;
     adminPanel.hidden = true;
@@ -266,5 +267,71 @@ listBody.addEventListener("click", async (e) => {
   if (!confirm("Padam murid ini?")) return;
   await db.collection("murid").doc(btn.dataset.id).delete();
   loadList();
+});
+
+// ---------------- Guru & PPM ----------------
+const ROLE_LABELS = { guru: "Guru", ppm: "PPM" };
+
+const guruSingleForm = document.getElementById("guruSingleForm");
+const guruSingleResult = document.getElementById("guruSingleResult");
+const guruFilterRole = document.getElementById("guruFilterRole");
+const guruListBody = document.getElementById("guruListBody");
+
+guruSingleForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const nama = document.getElementById("guruSingleName").value.trim();
+  const peranan = document.getElementById("guruSingleRole").value;
+  const gambar = document.getElementById("guruSingleImage").value.trim();
+  if (!nama) return;
+
+  try {
+    await db.collection("guru").add({ nama, peranan, gambar });
+    guruSingleResult.hidden = false;
+    guruSingleResult.textContent = `"${nama}" berjaya ditambah sebagai ${ROLE_LABELS[peranan]}.`;
+    guruSingleForm.reset();
+    loadGuruList();
+  } catch (err) {
+    guruSingleResult.hidden = false;
+    guruSingleResult.textContent = "Gagal menambah: " + err.message;
+  }
+});
+
+async function loadGuruList() {
+  const role = guruFilterRole.value;
+  let query = db.collection("guru");
+  if (role !== "all") query = query.where("peranan", "==", role);
+
+  guruListBody.innerHTML = `<tr><td colspan="4">Memuatkan...</td></tr>`;
+  try {
+    const snap = await query.get();
+    if (snap.empty) {
+      guruListBody.innerHTML = `<tr><td colspan="4">Tiada data.</td></tr>`;
+      return;
+    }
+    guruListBody.innerHTML = "";
+    snap.forEach((doc) => {
+      const d = doc.data();
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${d.nama || ""}</td>
+        <td><span class="row-cat ${d.peranan}" style="background:${d.peranan === "guru" ? "#B9862C" : "#8C6A22"}">${ROLE_LABELS[d.peranan] || d.peranan}</span></td>
+        <td>${d.gambar || "<em>(tiada)</em>"}</td>
+        <td><button class="btn-del btn-del-guru" data-id="${doc.id}">Padam</button></td>
+      `;
+      guruListBody.appendChild(tr);
+    });
+  } catch (err) {
+    guruListBody.innerHTML = `<tr><td colspan="4">Ralat: ${err.message}</td></tr>`;
+  }
+}
+
+guruFilterRole.addEventListener("change", loadGuruList);
+
+guruListBody.addEventListener("click", async (e) => {
+  const btn = e.target.closest(".btn-del-guru");
+  if (!btn) return;
+  if (!confirm("Padam rekod ini?")) return;
+  await db.collection("guru").doc(btn.dataset.id).delete();
+  loadGuruList();
 });
 
